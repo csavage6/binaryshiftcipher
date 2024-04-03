@@ -12,7 +12,10 @@ binaryCharacters = ["000000", "000001", "000010", "000011", "000100", "000101", 
 
 
 def convertToBinary(inputChar):
-    return binaryCharacters[letterCharacters.index(inputChar.lower())]
+    if inputChar.lower() in letterCharacters:
+        return binaryCharacters[letterCharacters.index(inputChar.lower())]
+
+    return binaryCharacters[letterCharacters.index("*")]
 
 
 def convertToLetter(inputChar):
@@ -20,36 +23,78 @@ def convertToLetter(inputChar):
 
 
 def shiftMessage(inputText):
-    outputText = inputText
     shiftAmount = randint(1,6)
-
-    displacedChars = outputText[:shiftAmount]
-    outputText = outputText[shiftAmount:] + displacedChars
+    displacedChars = inputText[:shiftAmount]
+    outputText = inputText[shiftAmount:] + displacedChars
 
     return outputText, shiftAmount
 
 
 def unshiftMessage(inputText, shiftAmount):
-    outputText = inputText
-
-    displacedChars = outputText[-shiftAmount:]
-    outputText = displacedChars + outputText[:-shiftAmount]
+    displacedChars = inputText[-shiftAmount:]
+    outputText = displacedChars + inputText[:-shiftAmount]
 
     return outputText
 
 
-def encryptText(inputText):
-    pass
+def cipherText(inputText):
+    intermediateText = ""
+
+    for i in inputText:
+        intermediateText += convertToBinary(i)
+
+    intermediateText, shiftAmount = shiftMessage(intermediateText)
+    outputText = ""
+
+    for i in range(0,len(intermediateText), 6):
+        sixDigitChar = intermediateText[i:i+6]
+        outputText += convertToLetter(sixDigitChar)
+
+    outputText += str(shiftAmount)
+    return outputText
 
 
-def decryptText(inputText):
+def decipherText(inputText):
     textToDecrypt = inputText[:-1]
     shiftAmount = int(inputText[-1])
-    pass
+    intermediateText = ""
+
+    for i in textToDecrypt:
+        intermediateText += convertToBinary(i)
+
+    intermediateText = unshiftMessage(intermediateText, shiftAmount)
+    outputText = ""
+
+    for i in range(0, len(intermediateText), 6):
+        sixDigitChar = intermediateText[i:i+6]
+        outputText += convertToLetter(sixDigitChar)
+
+    return outputText
 
 
 def menu():
-    pass
+    choice = "0"
+
+    while choice != "q":
+        print("What would you like to do?")
+        print("1. Cipher")
+        print("2. Decipher")
+        print("q. Quit")
+        choice = str(input())
+
+        if choice == "1":
+            outputText = cipherText(input("What would you like to cipher?\n"))
+            print()
+            print(f"Ciphered Text:\t{outputText}")
+            print()
+
+        elif choice == "2":
+            outputText = decipherText(input("What would you like to decipher?\n"))
+            print()
+            print(f"Deciphered Text:\t{outputText}")
+            print()
+
+    print("Bye!")
 
 
 if __name__ == "__main__":
