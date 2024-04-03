@@ -23,9 +23,8 @@ def shiftMessage(inputText):
     outputText = inputText
     shiftAmount = randint(1,6)
 
-    for i in range(shiftAmount):
-        displacedChar = outputText[0]
-        outputText = outputText[1:] + displacedChar
+    displacedChars = outputText[:shiftAmount]
+    outputText = outputText[shiftAmount:] + displacedChars
 
     return outputText, shiftAmount
 
@@ -33,9 +32,8 @@ def shiftMessage(inputText):
 def unshiftMessage(inputText, shiftAmount):
     outputText = inputText
 
-    for i in range(shiftAmount):
-        displacedChar = outputText[-1]
-        outputText = displacedChar + outputText[:-1]
+    displacedChars = outputText[-shiftAmount:]
+    outputText = displacedChars + outputText[:-shiftAmount]
 
     return outputText
 
