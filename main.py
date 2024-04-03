@@ -43,6 +43,8 @@ def encryptText(inputText):
 
 
 def decryptText(inputText):
+    textToDecrypt = inputText[:-1]
+    shiftAmount = int(inputText[-1])
     pass
 
 
